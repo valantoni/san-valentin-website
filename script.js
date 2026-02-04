@@ -96,42 +96,58 @@ document.addEventListener('DOMContentLoaded', () => {
   let animId = null;
   function startSticker() {
     if (!sticker) return;
-    sticker.classList.remove('hidden');
-    // initial position: center
-    const sw = sticker.offsetWidth || 110;
-    const sh = sticker.offsetHeight || 110;
-    let x = (window.innerWidth - sw) / 2;
-    let y = (window.innerHeight - sh) / 2;
-    // random initial velocity (slower)
-    const STICKER_SPEED = 0.45; // lower values -> slower movement
-    let vx = (Math.random() * 2 + 1) * (Math.random() < 0.5 ? 1 : -1) * STICKER_SPEED;
-    let vy = (Math.random() * 2 + 1) * (Math.random() < 0.5 ? 1 : -1) * STICKER_SPEED;
 
-    function step() {
-      x += vx;
-      y += vy;
-      const maxX = window.innerWidth - sw;
-      const maxY = window.innerHeight - sh;
-      if (x <= 0) { x = 0; vx = Math.abs(vx); }
-      if (y <= 0) { y = 0; vy = Math.abs(vy); }
-      if (x >= maxX) { x = maxX; vx = -Math.abs(vx); }
-      if (y >= maxY) { y = maxY; vy = -Math.abs(vy); }
-      sticker.style.left = x + 'px';
-      sticker.style.top = y + 'px';
-      animId = requestAnimationFrame(step);
+    const start = () => {
+      // ensure visible before measuring
+      sticker.classList.remove('hidden');
+      // run on next frame so layout is updated
+      requestAnimationFrame(() => {
+        const sw = sticker.offsetWidth || 110;
+        const sh = sticker.offsetHeight || 110;
+        let x = (window.innerWidth - sw) / 2;
+        let y = (window.innerHeight - sh) / 2;
+        // random initial velocity (slower)
+        const STICKER_SPEED = 0.45; // lower values -> slower movement
+        let vx = (Math.random() * 2 + 1) * (Math.random() < 0.5 ? 1 : -1) * STICKER_SPEED;
+        let vy = (Math.random() * 2 + 1) * (Math.random() < 0.5 ? 1 : -1) * STICKER_SPEED;
+
+        function step() {
+          x += vx;
+          y += vy;
+          const maxX = window.innerWidth - sw;
+          const maxY = window.innerHeight - sh;
+          if (x <= 0) { x = 0; vx = Math.abs(vx); }
+          if (y <= 0) { y = 0; vy = Math.abs(vy); }
+          if (x >= maxX) { x = maxX; vx = -Math.abs(vx); }
+          if (y >= maxY) { y = maxY; vy = -Math.abs(vy); }
+          sticker.style.left = x + 'px';
+          sticker.style.top = y + 'px';
+          animId = requestAnimationFrame(step);
+        }
+
+        // start the loop
+        if (animId) cancelAnimationFrame(animId);
+        animId = requestAnimationFrame(step);
+
+        // keep sticker inside on resize
+        window.addEventListener('resize', () => {
+          const sw2 = sticker.offsetWidth || sw;
+          const sh2 = sticker.offsetHeight || sh;
+          x = Math.min(x, window.innerWidth - sw2);
+          y = Math.min(y, window.innerHeight - sh2);
+        });
+      });
+    };
+
+    // If image not loaded yet (common on mobile), wait for load before starting
+    if (sticker.complete && sticker.naturalWidth !== 0) {
+      start();
+    } else {
+      sticker.onload = start;
+      // fallback: still attempt to start if image fails to load
+      sticker.onerror = start;
+      // make visible as early hint
+      sticker.classList.remove('hidden');
     }
-
-    // start the loop
-    if (animId) cancelAnimationFrame(animId);
-    animId = requestAnimationFrame(step);
-
-    // keep sticker inside on resize
-    window.addEventListener('resize', () => {
-      // clamp position if needed
-      const sw2 = sticker.offsetWidth || sw;
-      const sh2 = sticker.offsetHeight || sh;
-      x = Math.min(x, window.innerWidth - sw2);
-      y = Math.min(y, window.innerHeight - sh2);
-    });
   }
 });
