@@ -1,0 +1,11 @@
+/* Estilos simples para la invitación */
+html, body { height:100%; margin:0; font-family: 'Segoe UI', Roboto, Arial, sans-serif; }
+body { background: linear-gradient(135deg,#ffc1cc,#ffd1f0); display:flex; align-items:center; justify-content:center; }
+.wrap { text-align:center; padding:24px; }
+h1 { color:#7a1f3a; margin-bottom:24px; font-size:1.8rem; }
+.buttons { position: relative; height:160px; }
+.btn { border:none; border-radius:10px; cursor:pointer; transition: transform 0.25s ease, left 0.25s ease, top 0.25s ease; }
+.yes { background:#e91e63; color:#fff; font-size:1.25rem; padding:14px 28px; box-shadow:0 6px 14px rgba(0,0,0,0.15); }
+.no { background:#fff; color:#333; font-size:1rem; padding:10px 16px; position:fixed; }
+.hidden { display:none; }
+.gif img { max-width:90vw; height:auto; border-radius:12px; box-shadow:0 10px 24px rgba(0,0,0,0.2); }
