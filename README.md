@@ -7,9 +7,14 @@ Comportamiento:
 - Botón "Sí": al pulsarlo se ocultan los botones y aparece un GIF animado.
 - Botón "No": se mueve cuando el cursor se acerca y no es clicable.
 
-Para servirlo localmente (opcional):
+Ejecutar localmente:
 
 ```bash
 python -m http.server 8000
 # luego abrir http://localhost:8000 en tu navegador
+```
+
+
+```
+Usando Live Sever pluggin en Visual Studio
 ```
