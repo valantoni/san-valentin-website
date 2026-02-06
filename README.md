@@ -17,4 +17,6 @@ python -m http.server 8000
 
 ```
 Usando Live Sever pluggin en Visual Studio
+
+botón derecho sobre el archivo .html -> Open with live server
 ```
